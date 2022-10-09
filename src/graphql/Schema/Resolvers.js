@@ -7,12 +7,13 @@ const resolvers = {
       if (parent?.name) {
         console.log('parent', parent)
       }
-      const books = await Book.find().populate("author");
+      console.log('parent, args', {parent, args})
+      const books = await Book.find().populate({ path: "author", populate: { path: "books", populate: { path: "author"}}})
       return books;
     },
 
     authors: async () => {
-      return await Author.find().populate("books");
+      return await Author.find().populate({ path: "books", populate: { path: "author", populate: { path: "books"}}});
     },
 
     book: async (parent, args) => { 
